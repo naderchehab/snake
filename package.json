@@ -1,29 +1,22 @@
 {
-  "name": "simple-express-static-server",
+  "name": "snake",
   "version": "0.0.1",
-  "description": "A very simple static file server.",
-  "main": "server.js",
+  "description": "Snake!",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/spadin/simple-express-static-server.git"
+    "url": "git://github.com/naderchehab/snake.git"
   },
-  "author": "Sandro Padin",
-  "contributors" : [ "Luca Capra" ],
+  "author": "Nader Chehab",
+  "contributors" : [],
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/spadin/simple-express-static-server/issues"
-  },
-  "homepage": "https://github.com/spadin/simple-express-static-server",
   "dependencies": {
     "express": "^4.1.2",
     "body-parser": "^1.1.2",
     "errorhandler": "^1.0.1",
     "method-override": "^1.0.0"
-  },
-  "bin": {
-    "simple-server": "./start.js"
   }
 }

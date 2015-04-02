@@ -1,104 +1,107 @@
-(function() {
+/**
+ * Created by Nader on 4/1/2015.
+ */
 
-    var canvas = document.getElementById('canvas')
-        , ctx = canvas.getContext('2d')
-        , queue = []
+var snake = (function () {
+
+    var queue = {
+            arr: [],
+            length: 0,
+            enqueue: function (obj) {
+                this.arr.unshift(obj);
+
+                if (this.arr.length > this.length) {
+                    this.arr.pop();
+                }
+            },
+            get: function (i) {
+                return this.arr[i];
+            }
+        }
         , snake = {
             x: 30
             , y: 30
-            , direction: 'right'
+            , xdir: 1
+            , ydir: 0
             , speed: 0.6
-            , size: 5
+            , length: 20
             , blockSize: 2
         };
 
-    init();
 
     function init() {
-        window.addEventListener('resize', resizeCanvas, false);
-        window.addEventListener('keydown', keyDown, false);
-        resizeCanvas();
-        queue.push({});
-    }
 
-    function resizeCanvas() {
-        canvas.height = window.innerHeight * 0.95;
-        canvas.width =  Math.min(canvas.height * 1.5, document.body.clientWidth);
+        queue.length = snake.length;
+
+        for (var i = 0; i < snake.length; i++) {
+            queue.enqueue({x: snake.x, y: snake.y});
+        }
+
+        window.addEventListener('keydown', keyDown, false);
+
         draw();
     }
 
     function keyDown(e) {
         e = e || window.event;
-        switch(e.keyCode) {
-            case 38:
-                snake.direction = 'up';
-            break;
+        switch (e.keyCode) {
+            case 38: // up
+                snake.xdir = 0;
+                snake.ydir = -1;
+                break;
             case 40:
-            snake.direction = 'down';
-            break;
-            case 37:
-                snake.direction = 'left';
-            break;
-            case 39:
-                snake.direction = 'right';
-            break;
-
+                snake.xdir = 0;
+                snake.ydir = 1;
+                break;
+            case 37: // left
+                snake.xdir = -1;
+                snake.ydir = 0;
+                break;
+            case 39: // right
+                snake.xdir = 1;
+                snake.ydir = 0;
+                break;
         }
-    }
-
-    function rectPercent(x, y, width, height) {
-        ctx.beginPath();
-        ctx.rect(x*canvas.width/100, y*canvas.height/100, width*canvas.width/100, height*canvas.height/100);
-        ctx.fill();
-        ctx.closePath();
     }
 
     function draw() {
-        var xdir = 0
-            , ydir = 0;
 
-        switch(snake.direction) {
-            case 'left':
-                xdir = -1;
-                ydir = 0;
-                break;
-            case 'right':
-                xdir = 1;
-                ydir = 0;
-                break;
-            case 'up':
-                xdir = 0;
-                ydir = -1;
-                break;
-            case 'down':
-                xdir = 0;
-                ydir = 1;
-                break;
-        }
+        canvas.clear();
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        for (var i = 0; i < snake.size; i++) {
-            rectPercent(snake.x-(i*xdir*snake.blockSize), snake.y-(i*ydir*snake.blockSize), snake.blockSize, snake.blockSize);
-        }
-
-        if (xdir !== 0) {
-            if (snake.x < 100 + snake.size * snake.blockSize) {
-                snake.x += xdir * snake.speed;
-            }
-            else {
+        if (snake.xdir !== 0) {
+            if (snake.x > 100) {
                 snake.x = 0;
             }
-        }
-        else if (ydir !== 0) {
-            if (snake.y < 100 + snake.size * snake.blockSize) {
-                snake.y += ydir * snake.speed;
+            else if (snake.x < 0) {
+                snake.x = 100;
             }
             else {
+                snake.x += snake.xdir * snake.speed;
+            }
+        }
+        else if (snake.ydir !== 0) {
+            if (snake.y > 100) {
                 snake.y = 0;
             }
+            else if (snake.y < 0) {
+                snake.y = 100;
+            }
+            else {
+                snake.y += snake.ydir * snake.speed;
+            }
+        }
+
+        queue.enqueue({x: snake.x, y: snake.y});
+
+        for (var i = 0; i < snake.length; i++) {
+            var point = queue.get(i);
+            canvas.rectPercent(point.x, point.y, snake.blockSize, snake.blockSize);
         }
 
         window.requestAnimationFrame(draw);
+    }
+
+    return {
+        init: init
     }
 })();

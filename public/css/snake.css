@@ -1,11 +1,6 @@
-
-html, body, section {
-    width: 99%;
-    height: 99%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 #canvas {
     border: 1px solid gray;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
 }

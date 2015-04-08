@@ -4,101 +4,164 @@
 
 var snake = (function () {
 
-    var queue = {
-            arr: [],
-            length: 0,
-            enqueue: function (obj) {
+    var score = 0
+        , queue = {
+            arr: []
+            , maxLength: 0
+            , get length() {
+                return this.arr.length;
+            }
+            , enqueue: function (obj) {
                 this.arr.unshift(obj);
 
-                if (this.arr.length > this.length) {
+                if (this.arr.length > this.maxLength) {
                     this.arr.pop();
                 }
-            },
-            get: function (i) {
+            }
+            , get: function (i) {
                 return this.arr[i];
             }
         }
         , snake = {
-            x: 30
-            , y: 30
-            , xdir: 1
-            , ydir: 0
-            , speed: 0.6
-            , length: 20
+            location: {x: 30, y: 30}
+            , direction: {x: 1, y: 0}
+            , speed: 2
+            , length: 10
+            , blockSize: 2
+        }
+        , food = {
+            location: {x: 0, y: 0}
             , blockSize: 2
         };
 
 
+    /**
+     * Init
+     */
     function init() {
-
-        queue.length = snake.length;
-
-        for (var i = 0; i < snake.length; i++) {
-            queue.enqueue({x: snake.x, y: snake.y});
-        }
-
+        queue.maxLength = snake.length;
         window.addEventListener('keydown', keyDown, false);
-
-        draw();
+        placeFood();
+        moveSnake();
+        animate();
     }
 
+    /**
+     * Keydown
+     */
     function keyDown(e) {
         e = e || window.event;
         switch (e.keyCode) {
             case 38: // up
-                snake.xdir = 0;
-                snake.ydir = -1;
+                if ((snake.direction.x === 0 && snake.direction.y === 1) === false) {
+                    snake.direction = {x: 0, y: -1};
+                }
                 break;
-            case 40:
-                snake.xdir = 0;
-                snake.ydir = 1;
+            case 40: // down
+                if ((snake.direction.x === 0 && snake.direction.y === -1) === false) {
+                    snake.direction = {x: 0, y: 1};
+                }
                 break;
             case 37: // left
-                snake.xdir = -1;
-                snake.ydir = 0;
+                if ((snake.direction.x === 1 && snake.direction.y === 0) === false) {
+                    snake.direction = {x: -1, y: 0};
+                }
                 break;
             case 39: // right
-                snake.xdir = 1;
-                snake.ydir = 0;
+                if ((snake.direction.x === -1 && snake.direction.y === 0) === false) {
+                    snake.direction = {x: 1, y: 0};
+                }
                 break;
         }
     }
 
-    function draw() {
+    /**
+     * Move snake
+     */
+    function moveSnake() {
+        if (hasCollision()) {
+
+            document.getElementById('score').innerHTML = "Game over! <br> Score: " + score.toString();
+
+            return;
+        }
+
+        queue.enqueue(_.clone(snake.location));
+
+        if (snake.direction.x !== 0) {
+            if (snake.location.x > 100) {
+                snake.location.x = 0;
+            }
+            else if (snake.location.x < 0) {
+                snake.location.x = 100;
+            }
+            else {
+                snake.location.x += snake.direction.x * snake.speed;
+            }
+        }
+        else {
+            if (snake.location.y > 100) {
+                snake.location.y = 0;
+            }
+            else if (snake.location.y < 0) {
+                snake.location.y = 100;
+            }
+            else {
+                snake.location.y += snake.direction.y * snake.speed;
+            }
+        }
+
+        if (hasEatenFood()) {
+            snake.length++;
+            queue.maxLength++;
+            score++;
+            document.getElementById('score').innerText = score.toString();
+            placeFood();
+        }
+
+        window.setTimeout(moveSnake, 80);
+    }
+
+    /**
+     * Place food
+     */
+    function placeFood() {
+        food.location.x = Math.floor(Math.random() * 100 / snake.speed) * snake.speed;
+        food.location.y = Math.floor(Math.random() * 100 / snake.speed) * snake.speed;
+    }
+
+    /**
+     * Draw
+     */
+    function animate() {
+        var i, point;
 
         canvas.clear();
 
-        if (snake.xdir !== 0) {
-            if (snake.x > 100) {
-                snake.x = 0;
-            }
-            else if (snake.x < 0) {
-                snake.x = 100;
-            }
-            else {
-                snake.x += snake.xdir * snake.speed;
-            }
-        }
-        else if (snake.ydir !== 0) {
-            if (snake.y > 100) {
-                snake.y = 0;
-            }
-            else if (snake.y < 0) {
-                snake.y = 100;
-            }
-            else {
-                snake.y += snake.ydir * snake.speed;
-            }
-        }
-
-        queue.enqueue({x: snake.x, y: snake.y});
-
-        for (var i = 0; i < snake.length; i++) {
-            var point = queue.get(i);
+        for (i = 0; i < queue.length; i++) {
+            point = queue.get(i);
             canvas.rectPercent(point.x, point.y, snake.blockSize, snake.blockSize);
         }
 
-        window.requestAnimationFrame(draw);
+        canvas.rectPercent(food.location.x, food.location.y, food.blockSize, food.blockSize);
+
+        window.requestAnimationFrame(animate);
+    }
+
+    /**
+     * Has the snake collided with itself?
+     */
+    function hasCollision() {
+        return _.uniq(queue.arr, function (n) {
+                return n.x + "_" + n.y;
+            }).length !== queue.length;
+    }
+
+    /**
+     * Has the snake eaten the food
+     */
+    function hasEatenFood() {
+        return _.findWhere(queue.arr, {x: food.location.x, y: food.location.y}) != null;
     }
 
     return {

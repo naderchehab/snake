@@ -1,7 +1,9 @@
-Snake
-======
+Responsive Snake
+================
 
 Description
 -----------
 
-Snake game using canvas
+Responsive snake game using canvas.
+
+http://snakee.herokuapp.com

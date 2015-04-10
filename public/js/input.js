@@ -15,21 +15,29 @@ var input = (function () {
     function keyDownHandler(e) {
         e = e || window.event;
         switch (e.keyCode) {
+            case 'w'.charCodeAt(0):
+            case 'W'.charCodeAt(0):
             case 38: // up
                 if ((this.direction.x === 0 && this.direction.y === 1) === false) {
                     this.direction = {x: 0, y: -1};
                 }
                 break;
+            case 's'.charCodeAt(0):
+            case 'S'.charCodeAt(0):
             case 40: // down
                 if ((this.direction.x === 0 && this.direction.y === -1) === false) {
                     this.direction = {x: 0, y: 1};
                 }
                 break;
+            case 'a'.charCodeAt(0):
+            case 'A'.charCodeAt(0):
             case 37: // left
                 if ((this.direction.x === 1 && this.direction.y === 0) === false) {
                     this.direction = {x: -1, y: 0};
                 }
                 break;
+            case 'd'.charCodeAt(0):
+            case 'D'.charCodeAt(0):
             case 39: // right
                 if ((this.direction.x === -1 && this.direction.y === 0) === false) {
                     this.direction = {x: 1, y: 0};

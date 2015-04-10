@@ -49,9 +49,11 @@ var snake = (function () {
      * Move snake
      */
     function moveSnake() {
-
+        var message;
         if (hasCollision()) {
-            document.getElementById('score').innerHTML = "Game over! <br> Score: " + score.toString();
+            message = document.getElementById('message');
+            message.innerHTML = "Game over! <br> Score: " + score.toString();
+            message.style.display = 'block';
             return;
         }
 

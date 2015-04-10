@@ -1,10 +1,11 @@
 body {
+    font-family: "courier new";
     color: #25a233;
     background-color: #000;
 }
 
 #canvas {
-    border: 1px solid darkgreen;
+    border: 5px solid #006400;
     margin: auto;
     position: absolute;
     top: 0;
@@ -13,10 +14,14 @@ body {
     right: 0;
 }
 
-#score {
-    font-family: arial, sans-serif;
+#message {
     font-size: 2.5rem;
-    margin: 0;
+    display: none;
+    margin: auto;
+    position: absolute;
+    height: 50px;
+    width: 300px;
+    top: -200px; left: 0; bottom: 0; right: 0;
 }
 
 @media (max-width: 500px) {

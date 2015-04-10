@@ -21,5 +21,5 @@ app.use(errorHandler({
   showStack: true
 }));
 
-console.log("Simple static server showing %s listening at http://%s:%s", publicDir, port);
+console.log("Simple static server showing %s listening on port %s", publicDir, port);
 app.listen(port);

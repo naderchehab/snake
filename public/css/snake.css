@@ -1,8 +1,16 @@
+body {
+    color: #25a233;
+    background-color: #000;
+}
+
 #canvas {
-    border: 1px solid gray;
+    border: 1px solid darkgreen;
     margin: auto;
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 #score {
@@ -12,7 +20,7 @@
 }
 
 @media (max-width: 500px) {
-
-    #score { font-size: 1.5em; }
-
+    #score {
+        font-size: 1.5em;
+    }
 }

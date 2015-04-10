@@ -24,6 +24,7 @@ var canvas = (function() {
     function rectPercent(x, y, width, height) {
         ctx.beginPath();
         //ctx.fillStyle = '#' + Math.floor(Math.random()*16777215).toString(16);
+        ctx.fillStyle = '#25a233';
         ctx.rect(x*canvasEl.width/100, y*canvasEl.height/100, width*canvasEl.width/100, height*canvasEl.height/100);
         ctx.fill();
         ctx.closePath();

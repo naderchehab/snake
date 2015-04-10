@@ -34,55 +34,24 @@ var snake = (function () {
             , blockSize: 2
         };
 
-
     /**
      * Init
      */
     function init() {
         queue.maxLength = snake.length;
-        window.addEventListener('keydown', keyDown, false);
+        input.bindEvents(snake);
         placeFood();
         moveSnake();
         animate();
     }
 
     /**
-     * Keydown
-     */
-    function keyDown(e) {
-        e = e || window.event;
-        switch (e.keyCode) {
-            case 38: // up
-                if ((snake.direction.x === 0 && snake.direction.y === 1) === false) {
-                    snake.direction = {x: 0, y: -1};
-                }
-                break;
-            case 40: // down
-                if ((snake.direction.x === 0 && snake.direction.y === -1) === false) {
-                    snake.direction = {x: 0, y: 1};
-                }
-                break;
-            case 37: // left
-                if ((snake.direction.x === 1 && snake.direction.y === 0) === false) {
-                    snake.direction = {x: -1, y: 0};
-                }
-                break;
-            case 39: // right
-                if ((snake.direction.x === -1 && snake.direction.y === 0) === false) {
-                    snake.direction = {x: 1, y: 0};
-                }
-                break;
-        }
-    }
-
-    /**
      * Move snake
      */
     function moveSnake() {
+
         if (hasCollision()) {
-
             document.getElementById('score').innerHTML = "Game over! <br> Score: " + score.toString();
-
             return;
         }
 

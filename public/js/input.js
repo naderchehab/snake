@@ -53,15 +53,8 @@ var input = (function () {
         var x = e.targetTouches[0].pageX
             , y = e.targetTouches[0].pageY;
 
-        var canvasBounds = document.getElementById('canvas').getBoundingClientRect();
-
-        if (x <  canvasBounds.left || x > canvasBounds.right
-            || y < canvasBounds.top || y > canvasBounds.bottom) {
-            return;
-        }
-
-        x = (x - canvasBounds.left) * 100 / canvasBounds.width;
-        y = (y - canvasBounds.top ) * 100 / canvasBounds.height;
+        x = x / window.innerWidth * 100;
+        y = y / window.innerHeight * 100;
 
         // up
         if (x > 25 && x < 75 && y < 50) {
